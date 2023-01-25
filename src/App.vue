@@ -39,7 +39,7 @@
       </p>
       <p>
         <a
-          href="https://github.com/jameshschuler/doug-score-viewer"
+          href="https://github.com/jameshschuler/bobs-burgers-episode-of-the-day"
           target="_blank"
           ><i class="fab fa-fw fa-lg fa-github-alt"></i
         ></a>
