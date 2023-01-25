@@ -1,12 +1,3 @@
-<script setup lang="ts">
-import { ref } from "vue";
-
-const episodeName = ref<string>("Cheaty Cheaty Bang Bang");
-const randomEpisode = ref<string>("Season #13, Episode #11");
-
-// TODO: generate link to episode description? Maybe wiki?
-</script>
-
 <template>
   <main class="container mx-auto flex flex-col justify-center items-center">
     <h1 class="text-6xl mb-6 text-red-400">Bob's Burgers</h1>
@@ -16,18 +7,24 @@ const randomEpisode = ref<string>("Season #13, Episode #11");
     <h1 class="text-3xl mb-6 text-red-400 uppercase">of the Day</h1>
 
     <div
-      class="border-3 border-blue-400 p-8 mt-6 w-md flex flex-col justify-center items-center"
+      class="border-3 border-blue-400 p-8 mt-6 min-w-md w-auto flex flex-col justify-center items-center"
     >
-      <h2 class="text-2xl text-red-400 mb-2" v-if="randomEpisode">
-        "{{ episodeName }}"
-      </h2>
-      <h2 class="text-xl text-red-400" v-if="randomEpisode">
-        {{ randomEpisode }}
+      <a
+        class="text-2xl text-red-400 mb-2"
+        :href="episodeWikiUrl"
+        target="_blank"
+        v-if="episodeName"
+      >
+        {{ episodeName }}
+      </a>
+      <h2 class="text-xl text-red-400" v-if="seasonEpisodeText">
+        {{ seasonEpisodeText }}
       </h2>
     </div>
     <button
       id="random-episode-btn"
       class="w-xs text-white p-2 px-4 text-xl font-semibold bg-blue-400 mt-8"
+      @click="getRandomEpisode()"
     >
       Random
       <span><i class="fa-solid fa-burger mx-1"></i></span>
@@ -50,7 +47,41 @@ const randomEpisode = ref<string>("Season #13, Episode #11");
     </div>
   </footer>
 </template>
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
 
+const episodeName = ref<string>();
+const episodeWikiUrl = ref<string>();
+const seasonEpisodeText = ref<string>();
+const totalEpisodeCount = ref<number>(1);
+
+const baseUrl = "https://bobsburgers-api.herokuapp.com";
+
+const getRandomNumber = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min)) + min;
+
+async function getRandomEpisode() {
+  const randomEpisodeNumber = getRandomNumber(1, totalEpisodeCount.value + 1);
+
+  const response = await fetch(`${baseUrl}/episodes/${randomEpisodeNumber}`);
+  const { episode, episodeUrl, name, season } = await response.json();
+
+  episodeName.value = name;
+  episodeWikiUrl.value = episodeUrl;
+  seasonEpisodeText.value = `Season #${season}, Episode #${episode}`;
+}
+
+async function getTotalEpisodes() {
+  const response = await fetch(`${baseUrl}/episodes`);
+  const data = await response.json();
+  totalEpisodeCount.value = data.length;
+}
+
+onMounted(async () => {
+  await getTotalEpisodes();
+  await getRandomEpisode();
+});
+</script>
 <style lang="scss">
 * {
   font-family: "Poppins", sans-serif;
