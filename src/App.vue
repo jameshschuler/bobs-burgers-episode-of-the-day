@@ -64,7 +64,10 @@ async function getRandomEpisode() {
   const randomEpisodeNumber = getRandomNumber(1, totalEpisodeCount.value + 1);
 
   const response = await fetch(`${baseUrl}/episodes/${randomEpisodeNumber}`, {
-    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    mode: "no-cors",
   });
   const { episode, episodeUrl, name, season } = await response.json();
 
