@@ -67,7 +67,7 @@ async function getRandomEpisode() {
     headers: {
       "Content-Type": "application/json",
     },
-    mode: "no-cors",
+    mode: "cors",
   });
   const { episode, episodeUrl, name, season } = await response.json();
 
