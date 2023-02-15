@@ -1,13 +1,13 @@
 <template>
   <main class="container mx-auto flex flex-col justify-center items-center">
-    <h1 class="text-6xl mb-6 text-red-400">Bob's Burgers</h1>
+    <h1 class="text-6xl mb-6 text-red-400 <lg:text-center">Bob's Burgers</h1>
     <h1 class="text-5xl mt-6 mb-2 text-red-400 uppercase font-medium">
       Episode
     </h1>
     <h1 class="text-3xl mb-6 text-red-400 uppercase">of the Day</h1>
 
     <div
-      class="border-3 border-blue-400 p-8 mt-6 min-w-md w-auto flex flex-col justify-center items-center"
+      class="border-3 border-blue-400 p-8 mt-6 <lg:min-w-11/12 <lg:mx-6 min-w-md w-auto flex flex-col justify-center items-center"
     >
       <a
         class="text-2xl text-red-400 mb-2"
